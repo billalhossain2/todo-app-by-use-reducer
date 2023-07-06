@@ -3,24 +3,10 @@ import "./Todo.css";
 import todoContext from "../../contexts/todoContext";
 import { useContext } from "react";
 const Todo = ({ todo }) => {
-  const data = useContext(todoContext);
-  const { setTodoTitle, todos, setTodos, setEditableTodo } = data;
-  // const deleteTodo = id =>setTodos(todos.filter(todo => todo.id !== id));
-  const deleteTodo = (id) => {
-    const deletableIndex = todos.findIndex((todo) => todo.id === id);
-    todos.splice(deletableIndex, 1);
-    setTodos([...todos]);
-  };
+  const { setTodoTitle, setEditableTodo, dispatch } = useContext(todoContext);
 
-  const completeTodo = (id) => {
-    // todos.forEach(todo =>{
-    //   if(todo.id === id)todo.completed = !todo.completed;
-    // })
-    // setTodos([...todos]);
-    const toggleId = todos.findIndex((todo) => todo.id === id);
-    todos[toggleId].completed = !todos[toggleId].completed;
-    setTodos([...todos]);
-  };
+  const deleteTodo = (id) => dispatch({ type: "DELETE_TODO", payload: id });
+  const completeTodo = (id) => dispatch({ type: "TOGGLE_TODO", payload: id });
 
   const editTodo = (todo) => {
     setEditableTodo(todo);

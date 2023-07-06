@@ -2,27 +2,22 @@ import TodoWrapper from "./components/todoWrapper/TodoWrapper";
 import "./App.css";
 import React, { useReducer, useState } from "react";
 import todoContext from "./contexts/todoContext";
+import todosState from "./todosState/todosState";
+import todoReducer from "./reducers/todoReducer";
 function App() {
   const [todoTitle, setTodoTitle] = useState("");
-  const [todos, setTodos] = useState([]);
+
   const [editableTodo, setEditableTodo] = useState(null);
 
+  const [todos, dispatch] = useReducer(todoReducer, todosState);
 
-  // explore useReducer 
-  const reducer = (state, action) =>{
-    console.log(state)
-  }
-  const data = useReducer(reducer, 0);
-  console.log(data)
-
-  //create an object with all states
   const todoState = {
     todoTitle,
     setTodoTitle,
     todos,
-    setTodos,
     editableTodo,
     setEditableTodo,
+    dispatch
   };
 
   return (

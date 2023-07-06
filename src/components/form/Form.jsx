@@ -2,24 +2,23 @@ import "./Form.css";
 import todoContext from "../../contexts/todoContext";
 import { useContext } from "react";
 const Form = () => {
-  const {todoTitle, setTodoTitle, todos, setTodos, editableTodo, setEditableTodo} = useContext(todoContext)
-  
+  const { todoTitle, setTodoTitle, editableTodo, setEditableTodo, dispatch } =
+    useContext(todoContext);
+
   const handleChange = (ev) => setTodoTitle(ev.target.value);
-  const addTodo = () => setTodos([...todos, {id: Date.now(),title: todoTitle, completed: false}]);
-  
-  const updateTodo = () =>{
-    todos.forEach(todo=>{
-      if(todo.id === editableTodo.id){
-        todo.title = todoTitle
-      }
-    })
-    setTodos([...todos]);
-    setEditableTodo(null)
-  }
-  
+  const addTodo = () => dispatch({ type: "ADD_TODO", payload: todoTitle });
+
+  const updateTodo = () => {
+    dispatch({
+      type: "UPDATE_TODO",
+      payload: { id: editableTodo.id, todoTitle },
+    });
+    setEditableTodo(null);
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
-    if(!todoTitle)return alert("Please enter a todo")
+    if (!todoTitle) return alert("Please enter a todo");
     !editableTodo ? addTodo() : updateTodo();
     setTodoTitle("");
   };
